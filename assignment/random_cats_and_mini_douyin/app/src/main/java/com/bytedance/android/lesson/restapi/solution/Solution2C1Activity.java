@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import retrofit2.Retrofit;
 
 import com.bumptech.glide.Glide;
 import com.bytedance.android.lesson.restapi.solution.bean.Cat;
+import com.bytedance.android.lesson.restapi.solution.newtork.* ;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +49,8 @@ public class Solution2C1Activity extends AppCompatActivity {
                 ImageView iv = (ImageView) viewHolder.itemView;
 
                 // TODO-C1 (4) Uncomment these 2 lines, assign image url of Cat to this url variable
-//                String url = mCats.get(i).;
-//                Glide.with(iv.getContext()).load(url).into(iv);
+                 String url = mCats.get(i).geturl();
+                 Glide.with(iv.getContext()).load(url).into(iv);
             }
 
             @Override public int getItemCount() {
@@ -70,6 +72,11 @@ public class Solution2C1Activity extends AppCompatActivity {
         // TODO-C1 (3) Send request for 5 random cats here, don't forget to use {@link retrofit2.Call#enqueue}
         // Call restoreBtn() and loadPics(response.body()) if success
         // Call restoreBtn() if failure
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.thecatapi.com/v1/images/search?limit=5")
+                .build();
+
+        ICatService service = retrofit.create(ICatService.class);
 
     }
 
