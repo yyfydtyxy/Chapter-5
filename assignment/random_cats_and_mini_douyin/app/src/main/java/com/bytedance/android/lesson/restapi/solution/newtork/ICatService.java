@@ -1,14 +1,11 @@
 package com.bytedance.android.lesson.restapi.solution.newtork;
 
 
-import retrofit2.http.GET;
-import java.io.IOException;
-import okhttp3.ResponseBody;
+import com.bytedance.android.lesson.restapi.solution.bean.Cat;
+
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Path;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * @author Xavier.S
@@ -16,8 +13,7 @@ import retrofit2.http.Path;
  */
 public interface ICatService {
     // TODO-C1 (2) Implement your Cat Request here, url: https://api.thecatapi.com/v1/images/search?limit=5
-    @GET("blog/{id}")
-    Call<ResponseBody> getBlog(@Path("id") int id);
+    @GET("search?") Call<Cat> randomCat(
+            @Query("limit") int limit
+    );
 }
-
-

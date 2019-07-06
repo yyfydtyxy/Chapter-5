@@ -1,6 +1,8 @@
 package com.bytedance.android.lesson.restapi.restapi;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                     "{\"name\":\"Oreo\",\"code\":27}]}";
     public TextView mTv;
     private View mBtn;
-
+    String str;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,15 +38,32 @@ public class MainActivity extends AppCompatActivity {
 //        mTv.setText(parseFirstNameWithJSON()); // json test
 //        mTv.setText(parseFirstNameWithGson()); // json test
         initListeners();
+
     }
 
     private void initListeners() {
         mBtn.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                requestData(v);
+            @Override public void onClick(final View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        requestData(v);
+                        mHandler.sendMessage(new Message());
+                    }
+                }).start();
+
             }
         });
     }
+
+    Handler mHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            //requestData(findViewById(R.id.btn));
+            mTv.setText(str);
+        }
+    };
 
     private static String parseFirstNameWithGson() {
         OSList list = new Gson()
@@ -67,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void requestData(View view) {
         // HttpURLConnection
-//        String s = NetworkUtils.getResponseWithHttpURLConnection("https://api.icndb.com/jokes/random");
-//        mTv.setText(s);
+        //String s = NetworkUtils.getResponseWithHttpURLConnection("https://api.icndb.com/jokes/random");
+        //mTv.setText(s);
 
-        // Retrofit
-//        Joke j = NetworkUtils.getResponseWithRetrofit();
-//        mTv.setText(j.getValue().getJoke());
+         //Retrofit
+        Joke j = NetworkUtils.getResponseWithRetrofit();
+        str = j.getValue().getJoke();
     }
 }
